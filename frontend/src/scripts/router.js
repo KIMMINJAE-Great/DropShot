@@ -7,6 +7,8 @@ import News from "@/pages/News";
 import WorldNews from "@/pages/WorldNews";
 import Community from "@/pages/Community"
 import LocationCourt from "@/pages/LocationCourt";
+import Signup from "@/pages/Signup";
+import Login from "@/pages/Login";
 
 const routes = [
     // 루트경로로 들어올때는 컴포넌트를 Home으로 연결
@@ -17,6 +19,8 @@ const routes = [
     {path: '/worldnews', component: WorldNews},
     {path: '/community', component: Community},
     {path: '/locationcourt', component: LocationCourt},
+    {path: '/signup', component: Signup},
+    {path: '/login', component: Login},
 
 
     // {path:'/login', component: Login}

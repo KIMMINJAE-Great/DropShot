@@ -1,8 +1,7 @@
 <template>
 <Header/>
   <main class="container">
-  <RouterView/>
-
+  <RouterView class="routerview"/>
   </main>
 <Footer/>
 
@@ -28,5 +27,8 @@ export default {
 </script>
 
 <style>
+.container .routerview{
+  margin:0 auto;
 
+}
 </style>

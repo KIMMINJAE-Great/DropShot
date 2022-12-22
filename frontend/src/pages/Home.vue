@@ -171,9 +171,14 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   name: 'Home',
   setup() {
+    axios.get("/api/items").then((res)=>{
+      console.log(res);
+    })
     return {}
   }
 }
