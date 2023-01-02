@@ -14,13 +14,15 @@
 
             <div class="mb-3">
               <input type="text" class="form-control" id="Username" aria-describedby="emailHelp"
-                     placeholder="아이디">
+                    v-model="state.form.id" placeholder="아이디">
             </div>
             <div class="mb-3">
-              <input type="password" class="form-control" id="password" placeholder="비밀번호">
+              <input type="password" class="form-control" id="password" v-model="state.form.password" placeholder="비밀번호">
             </div>
-            <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">로그인</button></div>
-            <div id="emailHelp" class="form-text text-center mb-5 text-dark">회원이 아니시라면 &nbsp; <a href="#" class="text-dark fw-bold"> 회원가입</a>
+            <div class="text-center"><button type="button" @click="submit()" class="btn btn-color px-5 mb-5 w-100">로그인</button></div>
+            <div to="/signup" id="emailHelp" class="form-text text-center mb-5 text-dark" >
+              회원이 아니시라면 &nbsp;
+              <router-link to="/signup" class="text-dark fw-bold"> 회원가입</router-link>
             </div>
           </form>
         </div>
@@ -31,8 +33,33 @@
 </template>
 
 <script>
+import {reactive} from "vue";
+
 export default {
-  name: "Login"
+  name: "Login",
+  setup(){
+    const state = reactive({
+      form:{
+        id:"",
+        password:"",
+      }
+    })
+    const submit = ()=>{
+      if(state.form.id ==""){
+        alert("아이디를 입력해 주세요")
+        return
+      }
+      if(state.form.password ==""){
+        alert("비밀번호를 입력해 주세요")
+        return
+      }
+    }
+
+  return{state, submit}
+  }
+
+
+
 }
 </script>
 
