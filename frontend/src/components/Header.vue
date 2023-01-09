@@ -17,6 +17,7 @@
           <li><router-link to="worldnews" class="nav-link px-2 text-white">세계 소식</router-link></li>
           <li><router-link to="/community" class="nav-link px-2 text-white">커뮤니티</router-link></li>
           <li><router-link to="/locationcourt" class="nav-link px-2 text-white">코트위치</router-link></li>
+          <li><router-link to="/joinproc" class="nav-link px-2 text-white">회원가입완료</router-link></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -24,9 +25,11 @@
         </form>
 
         <div class="text-end">
-<!--          <button type="button" class="btn btn-outline-light me-2">로그인</button>-->
-          <router-link to="/login"  class="btn btn-outline-light me-2">로그인</router-link>
-          <router-link to="/signup" class="btn btn-warning">회원가입</router-link>
+          <!--          <button type="button" class="btn btn-outline-light me-2">로그인</button>-->
+          <router-link to="/login"  class="btn btn-outline-light me-2" @click="login()">로그인</router-link>
+          <!--          <router-link to="/login"  class="btn btn-outline-light me-2"  v-if="!$store.state.account.id">로그인</router-link>-->
+          <!--          <a to="/login" class="text-white" v-else @click="logout()">로그아웃</a>-->
+          <router-link to="/join" class="btn btn-warning" @click="join()">회원가입</router-link>
         </div>
       </div>
     </div>
@@ -35,10 +38,29 @@
 
 </template>
 <script>
+import router from "@/scripts/router";
+import axios  from "axios";
+
 export default {
   name:'Header',
   setup(){
-    return{}
+    const login = () => {
+      axios.get("/login").then(()=>{
+        console.log("Vue에서 Spring으로 Get요청...login")
+      })
+
+    }
+    const join =()=>{
+      axios.get("/join").then(()=>{
+        console.log("Vue에서 Spring으로 Get요청...join")
+      })
+    }
+
+    const logout =()=>{
+      sessionStorage.removeItem("id");
+      router.push({path:"/"})
+    }
+    return{logout, login,join}
   }
 
 }

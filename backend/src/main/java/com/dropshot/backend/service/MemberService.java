@@ -2,15 +2,14 @@ package com.dropshot.backend.service;
 
 import com.dropshot.backend.dto.MemberDTO;
 import com.dropshot.backend.entity.Member;
-import com.dropshot.backend.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public interface MemberService {
     String join(MemberDTO dto);
+//    String login(Member member);
 
     default Member dtoToEntity(MemberDTO dto) {
         Member member = Member.builder()
-                .id(dto.getId())
+                .username(dto.getUsername())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .nickname(dto.getNickname())
@@ -20,7 +19,7 @@ public interface MemberService {
     }
     default MemberDTO entityToDTO(Member member) {
         MemberDTO dto = MemberDTO.builder()
-                .id(member.getId())
+                .username(member.getUsername())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .nickname(member.getNickname())

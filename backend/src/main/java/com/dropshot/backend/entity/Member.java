@@ -1,12 +1,12 @@
 package com.dropshot.backend.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
 
 @Data
@@ -14,14 +14,18 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="member")
 public class Member extends BaseEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    @Column(length = 20, nullable = false, unique = true)
+    private String username;
 
     @Column(length = 100, nullable = false)
-    private int password;
+    private String password;
 
     @Column(length = 30, nullable = false)
     private String email;
@@ -33,7 +37,7 @@ public class Member extends BaseEntity {
     private String birthday;
 
     @Column
-    private String role;
+    private String role;//Role_USER, R0LE_MANGER, ROL_ADMIN
 //    @ElementCollection(fetch =  FetchType.LAZY)
 //    @Builder.Default
 //    private Set<MemberRole> roleSet = new HashSet<>();

@@ -17,9 +17,11 @@ import java.util.Set;
 @Builder
 public class MemberDTO {
 
-    private String id;
+    private Long id;
 
-    private int password;
+    private String username;
+
+    private String password;
 
     private String email;
 
@@ -30,6 +32,4 @@ public class MemberDTO {
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
-    @Builder.Default
-    private Set<String> role= new HashSet<>();
 }

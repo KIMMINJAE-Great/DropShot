@@ -1,21 +1,29 @@
 package com.dropshot.backend;
 
-import org.junit.jupiter.api.Test;
 import com.dropshot.backend.entity.Member;
 import com.dropshot.backend.repository.MemberRepository;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
-import java.util.function.IntConsumer;
-import java.util.stream.IntStream;
 
 @SpringBootTest
 class BackendApplicationTests {
 
-//    @Autowired
-//    MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
 //
+    @Test
+    public void test(){
+        String name = "aas";
+        Member member = memberRepository.findByUsername(name);
+        if(member != null){
+        System.out.println(member);
+
+        } else{
+            System.out.println("none");
+        }
+
+    }
 //    @Test
 //    public void joinTest() {
 //        IntStream.rangeClosed(1, 1).forEach(new IntConsumer() {
