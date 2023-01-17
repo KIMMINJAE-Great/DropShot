@@ -1,119 +1,118 @@
 <template>
-
   <header class="p-3 bg-success">
-
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <!--    <a href="/" class="navbar-brand">bezKoder</a>-->
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap"/>
+          </svg>
         </a>
-
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/"><iconify-icon icon="emojione-v1:tennis" width="35" height="35"></iconify-icon></a></li>
-          <li><router-link to="/" class="nav-link px-2 text-white">홈으로</router-link></li>
-          <li><router-link to="/introduce" class="nav-link px-2 text-white">홈페이지 소개</router-link></li>
-          <li><router-link to="/basic" class="nav-link px-2 text-white">테니스 기초</router-link></li>
-          <li><router-link to="/news" class="nav-link px-2 text-white">테니스 소식</router-link></li>
-          <li><router-link to="worldnews" class="nav-link px-2 text-white">세계 소식</router-link></li>
-          <li><router-link to="/community" class="nav-link px-2 text-white">커뮤니티</router-link></li>
-          <li><router-link to="/locationcourt" class="nav-link px-2 text-white">코트위치</router-link></li>
-          <li><router-link to="/joinproc" class="nav-link px-2 text-white">회원가입완료</router-link></li>
+          <li><a href="/">
+            <iconify-icon icon="emojione-v1:tennis" width="35" height="35"></iconify-icon>
+          </a></li>
+          <li>
+            <router-link to="/" class="nav-link px-2 text-white">
+              <font-awesome-icon icon="home"/>
+              홈으로
+            </router-link>
+          </li>
+<!--          <li v-if="showAdminBoard">-->
+          <li>
+            <router-link to="/admin" class="nav-link px-2 text-white">Admin Board</router-link>
+          </li>
+          <li v-if="showModeratorBoard">
+            <router-link to="/mod" class="nav-link px-2 text-white">Moderator Board</router-link>
+          </li>
+          <li>
+            <router-link v-if="currentUser" to="/user" class="nav-link px-2 text-white">User</router-link>
+          </li>
+          <li>
+            <router-link to="/introduce" class="nav-link px-2 text-white">홈페이지 소개</router-link>
+          </li>
+          <li>
+            <router-link to="/tennisbasic" class="nav-link px-2 text-white">테니스 기초</router-link>
+          </li>
+          <li>
+            <router-link to="/news" class="nav-link px-2 text-white">테니스 소식</router-link>
+          </li>
+          <li>
+            <router-link to="worldnews" class="nav-link px-2 text-white">세계 소식</router-link>
+          </li>
+          <li>
+            <router-link to="/community" class="nav-link px-2 text-white">커뮤니티</router-link>
+          </li>
+          <li>
+            <router-link to="/locationcourt" class="nav-link px-2 text-white">코트위치</router-link>
+          </li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control form-control-dark bg-white" placeholder="Search..." aria-label="Search">
+          <input type="search" class="form-control form-control-dark bg-white" placeholder="Search..."
+                 aria-label="Search">
         </form>
 
-        <div class="text-end">
-          <!--          <button type="button" class="btn btn-outline-light me-2">로그인</button>-->
-          <router-link to="/login"  class="btn btn-outline-light me-2" @click="login()">로그인</router-link>
-          <!--          <router-link to="/login"  class="btn btn-outline-light me-2"  v-if="!$store.state.account.id">로그인</router-link>-->
-          <!--          <a to="/login" class="text-white" v-else @click="logout()">로그아웃</a>-->
-          <router-link to="/join" class="btn btn-warning" @click="join()">회원가입</router-link>
+
+        <div v-if="!currentUser" class="text-end">
+
+          <router-link to="/login" class="btn btn-outline-light me-2">
+            로그인
+          </router-link>
+          <router-link to="/register" class="btn btn-warning">
+            회원가입
+          </router-link>
+
+
+        </div>
+
+        <div v-if="currentUser">
+          <!--유저네임-->
+          <!--        <router-link to="/profile" class="nav-link">-->
+          <!--          {{ currentUser.username }}-->
+          <!--        </router-link>-->
+
+          <a class="btn btn-outline-light me-2" @click.prevent="logOut">
+            로그아웃
+          </a>
+
         </div>
       </div>
     </div>
   </header>
-  <br>
-
 </template>
+
 <script>
-import router from "@/scripts/router";
-import axios  from "axios";
-
 export default {
-  name:'Header',
-  setup(){
-    const login = () => {
-      axios.get("/login").then(()=>{
-        console.log("Vue에서 Spring으로 Get요청...login")
-      })
+  name: "Header",
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    showAdminBoard() {
+      if (this.currentUser && this.currentUser['roles']) {
+        return this.currentUser['roles'].includes('ROLE_ADMIN');
+      }
 
-    }
-    const join =()=>{
-      axios.get("/join").then(()=>{
-        console.log("Vue에서 Spring으로 Get요청...join")
-      })
-    }
+      return false;
+    },
+    showModeratorBoard() {
+      if (this.currentUser && this.currentUser['roles']) {
+        return this.currentUser['roles'].includes('ROLE_MODERATOR');
+      }
 
-    const logout =()=>{
-      sessionStorage.removeItem("id");
-      router.push({path:"/"})
+      return false;
     }
-    return{logout, login,join}
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
   }
-
 }
 </script>
+
 <style scoped>
-.bd-placeholder-img {
-  font-size: 1.125rem;
-  text-anchor: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
 
-@media (min-width: 768px) {
-  .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-  }
-}
-
-.b-example-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-}
-
-.b-example-vr {
-  flex-shrink: 0;
-  width: 1.5rem;
-  height: 100vh;
-}
-
-.bi {
-  vertical-align: -.125em;
-  fill: currentColor;
-}
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
 </style>
